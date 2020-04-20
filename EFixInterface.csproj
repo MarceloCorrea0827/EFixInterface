@@ -6,9 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Images\" />
-    <Folder Include="Services\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>
