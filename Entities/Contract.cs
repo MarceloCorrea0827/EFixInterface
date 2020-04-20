@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace EFixInterface.Entities
 {
@@ -7,15 +9,15 @@ namespace EFixInterface.Entities
     {
         public int Number { get; set; }
         public DateTime Date { get; set; }
-        public double Value { get; set; }
+        public double Amount { get; set; }
 
         public List<Installment> installments = new List<Installment>();
 
-        public Contract(int number, DateTime date, double value)
+        public Contract(int number, DateTime date, double amount)
         {
             Number = number;
             Date = date;
-            Value = value;
+            Amount = amount;
         }
 
         public void addInstallment(Installment installment)
@@ -25,7 +27,13 @@ namespace EFixInterface.Entities
 
         public override string ToString()
         {
-            return base.ToString();
+            StringBuilder sb = new StringBuilder();
+            foreach (Installment installment in installments) {
+                sb.Append(installment.Date.ToString("dd/MM/yyyy"));
+                sb.Append(" - ");
+                sb.AppendLine(installment.Amount.ToString("F2",CultureInfo.InvariantCulture));
+            }
+            return sb.ToString();
         }
     }
 }
