@@ -17,21 +17,15 @@ namespace EFixInterface.Services
 
         public void processInstallments(Contract contract)
         {
-            DateTime date = contract.Date;
-            double amount = (contract.Amount / Quotes);
+            double basicQuote = (contract.Amount / Quotes);
 
             for (int quote=1; quote<=Quotes; quote++)
             {
-                if (quote > 1)
-                {
-                    date = date.AddDays(30);
-                }
+                DateTime date = contract.Date.AddMonths(quote);
+                double updateQuote = basicQuote + _paymentInstallment.Tax(basicQuote, quote);
+                double fullQuote = updateQuote + _paymentInstallment.SimpleInterest(updateQuote);
 
-                amount += _paymentInstallment.Tax(amount, quote);
-                amount += _paymentInstallment.SimpleInterest(amount);
-
-                contract.addInstallment(new Installment(date, amount));
-                amount = (contract.Amount / Quotes);
+                contract.addInstallment(new Installment(date, fullQuote));
             }
         }
     }
